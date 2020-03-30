@@ -10,13 +10,21 @@ import logoImg from '../../assets/logo.png';
 
 export default function Profile() {
     const [contacts, setContacts] = useState([]);
+    const [welcome, setWelcome] = useState('');
 
     const history = useHistory();
 
     const userId = localStorage.getItem('userId');
     const userName = localStorage.getItem('userName');
+    const userGender = localStorage.getItem('userGender');
 
     useEffect(() => {
+        if (userGender == 'Male') {
+            setWelcome('Bem Vindo');
+        } else {
+            setWelcome('Bem Vinda');
+        }
+
         try {
             api.get('profile', {
                 headers: {
@@ -75,7 +83,7 @@ export default function Profile() {
         <div className="profile-container">
             <header>
                 <img src={logoImg} alt="CCS Contador de Contato Social" />
-                <span>Bem Vindo, {userName}</span>
+                <span>{welcome}, {userName}</span>
 
                 <Link className="button" to="/contacts/new">
                     Cadastrar novo contato

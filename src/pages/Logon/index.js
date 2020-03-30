@@ -23,6 +23,7 @@ export default function Logon() {
 
             localStorage.setItem('userId', res.data.id);
             localStorage.setItem('userName', res.data.name);
+            localStorage.setItem('userGender', res.data.gender);
 
             history.push('/profile');
         } catch (err) {
