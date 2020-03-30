@@ -51,19 +51,24 @@ export default function Profile() {
         history.push('/');
     }
 
-    function handleTempo(dtChegada) {
-        const dtPartida = new Date();
+    function handleTempo(dt) {
+        const quando = new Date(dt).toISOString().substr(0, 19).replace('T', ' ');
+        const dtAgora = new Date().toISOString().substr(0, 19).replace('T', ' ');
 
-        const date1 = new Date(dtPartida.getFullYear(), dtPartida.getMonth(),dtPartida.getDay(), dtPartida.getHours(), dtPartida.getMinutes()),
-              date2 = new Date(dtChegada.slice(0,4), dtChegada.slice(5,7),dtChegada.slice(8,10), dtChegada.slice(11,13), dtChegada.slice(14,16));
+        const date1 = new Date(dtAgora.slice(0,4), dtAgora.slice(5,7),dtAgora.slice(8,10), dtAgora.slice(11,13), dtAgora.slice(14,16)),
+              date2 = new Date(quando.slice(0,4), quando.slice(5,7),quando.slice(8,10), quando.slice(11,13), quando.slice(14,16));
 
-        const diffMs = (date2 - date1);
-        const diffDs = Math.floor(((diffMs % 86400000) / 3600000) / 24);
-        const diffHrs = Math.floor((diffMs % 86400000) / 3600000);
-        const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
-        const diff = diffDs + 'd ' + diffHrs + 'h ' + diffMins + 'm';
+        const diffMs = (date1 - date2);
+        
+        const diffDs = Math.abs(Math.round( diffMs / (1000 * 3600 * 24) ));
+        const diffHrs = Math.round( (diffMs / (1000 * 3600)) );
+        const diffMins = Math.round( ((diffMs % 86400000) % 3600000) / 60000 );
 
-        return diff;
+        if (diffDs > 0) {
+            return diffDs + 'd ' + diffHrs + 'h ' + diffMins + 'm';
+        } else {
+            return diffHrs + 'h ' + diffMins + 'm';
+        }
     }
 
     return (
