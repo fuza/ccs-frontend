@@ -54,9 +54,10 @@
 }
 
 .profile-container table button {
-    top: 24px;
+    vertical-align: middle;
     border: 0;
     transition: opacity 0.2s;
+    margin-left: 20px;
 }
 
 .profile-container table button:hover {
@@ -70,6 +71,24 @@
 
 .profile-container table td {
     color: #737380;
-    line-height: 21px;
+    line-height: 40px;
     font-size: 16px;
+}
+
+.profile-container table td label {
+    border: 1px solid red;
+    border-radius: 8px;
+    color: #fff;
+    background: #e02041;
+    padding: 5px;
+    width: 100%;
+    max-width: 200px;
+    height: 4vh;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+
 }

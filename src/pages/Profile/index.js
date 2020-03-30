@@ -19,14 +19,20 @@ export default function Profile() {
     const userGender = localStorage.getItem('userGender');
 
     useEffect(() => {
-        if (userGender == 'Male') {
+        if (userGender === 'Male') {
             setWelcome('Bem Vindo');
         } else {
             setWelcome('Bem Vinda');
         }
 
+        lista();
+        //getContacts(userId);
+
+    }, [userId, userGender]);
+
+    async function getContacts(userId) {
         try {
-            api.get('profile', {
+            await api.get('profile', {
                 headers: {
                     Authorization: userId,
                 }
@@ -38,7 +44,7 @@ export default function Profile() {
         } catch (err) {
             alert('Erro ao buscar contatos');
         }
-    }, [userId]);
+    }
 
     async function handleDeleteContact(id) {
         try {
@@ -69,7 +75,15 @@ export default function Profile() {
         const diffMs = (date1 - date2);
         
         const diffDs = Math.abs(Math.round( diffMs / (1000 * 3600 * 24) ));
-        const diffHrs = Math.round( (diffMs / (1000 * 3600)) );
+
+        //const diffHrs = Math.round( (diffMs / (1000 * 3600)) );
+
+        var diffHrs = Math.round( (diffMs / (1000 * 3600)) );
+
+        if (diffHrs > 59) {
+            diffHrs = diffHrs - 60;
+        }
+
         const diffMins = Math.round( ((diffMs % 86400000) % 3600000) / 60000 );
 
         if (diffDs > 0) {
@@ -77,6 +91,14 @@ export default function Profile() {
         } else {
             return diffHrs + 'h ' + diffMins + 'm';
         }
+    }
+
+    function lista() {
+        setTimeout( function() {
+            console.log("Atualizando lista");
+            lista();
+          }, 60000 );
+        getContacts(userId);
     }
 
     return (
@@ -111,7 +133,7 @@ export default function Profile() {
                         <td>{new Intl.DateTimeFormat("pt-BR", {year: "numeric",month: "2-digit",day: "2-digit", hour: 'numeric', minute: 'numeric', hour12: false,}).format(new Date(contact.quando))}</td>
                         <td>{contact.onde}</td>
                         <td>{contact.como}</td>
-                        <td>{handleTempo(contact.quando)}</td>
+                        <td><label>{handleTempo(contact.quando)}</label></td>
                         <td>
                             <button onClick={() => handleDeleteContact(contact.id)} type="button">
                                 <FiTrash2 size={20} color="#a8a8b3" />
