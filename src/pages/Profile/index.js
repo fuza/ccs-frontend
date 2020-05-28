@@ -18,18 +18,6 @@ export default function Profile() {
     const userName = localStorage.getItem('userName');
     const userGender = localStorage.getItem('userGender');
 
-    useEffect(() => {
-        if (userGender === 'Male') {
-            setWelcome('Bem Vindo');
-        } else {
-            setWelcome('Bem Vinda');
-        }
-
-        lista();
-        //getContacts(userId);
-
-    }, [userId, userGender]);
-
     async function getContacts(userId) {
         try {
             await api.get('profile', {
@@ -93,13 +81,24 @@ export default function Profile() {
         }
     }
 
-    function lista() {
-        setTimeout( function() {
-            console.log("Atualizando lista");
-            lista();
-          }, 60000 );
+    useEffect(() => {
+        async function lista(userId) {
+            setTimeout( function() {
+                console.log("Atualizando lista");
+                getContacts(userId);
+            }, 60000 );
+        }
+                
+        if (userGender === 'Masculino') {
+            setWelcome('Bem Vindo');
+        } else {
+            setWelcome('Bem Vinda');
+        }
+
         getContacts(userId);
-    }
+        lista(userId);
+
+    }, [userId, userGender]);
 
     return (
         <div className="profile-container">
@@ -120,10 +119,10 @@ export default function Profile() {
             <table>
                 <thead>
                     <tr>
-                        <th width="15%">QUANDO?</th>
-                        <th width="35%">ONDE?</th>
-                        <th width="35%">COMO?</th>
-                        <th width="100px">TEMPO</th>
+                        <th width="20%">QUANDO?</th>
+                        <th width="30%">ONDE?</th>
+                        <th width="30%">COMO?</th>
+                        <th width="350px">TEMPO</th>
                         <th width="1px"> </th>
                     </tr>
                 </thead>
